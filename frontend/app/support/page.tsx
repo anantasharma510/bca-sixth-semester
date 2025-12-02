@@ -60,9 +60,9 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-white dark:bg-neutral-900">
       {/* Header */}
-      <header className="border-b border-gray-200 dark:border-gray-800">
+      <header className="border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center gap-4">
             <a href="/" className="flex items-center gap-2">
@@ -73,7 +73,7 @@ export default function SupportPage() {
                 height={40}
                 className="rounded-full"
               />
-              <h1 className={`${pacifico.className} text-2xl text-gray-900 dark:text-white`}>
+              <h1 className={`${pacifico.className} text-2xl text-neutral-900 dark:text-white`}>
                 AIRWIG
               </h1>
             </a>
@@ -84,26 +84,26 @@ export default function SupportPage() {
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-4xl font-bold text-neutral-900 dark:text-white mb-4">
             Contact Support
           </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
+          <p className="text-lg text-neutral-600 dark:text-neutral-400">
             We're here to help! Send us a message and we'll get back to you as soon as possible.
           </p>
         </div>
 
         {/* Login Required Notice */}
         {!isSignedIn && (
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-8">
+          <div className="bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg p-6 mb-8">
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+              <h3 className="text-lg font-semibold text-primary-900 dark:text-primary-100 mb-2">
                 Sign in to submit a support ticket
               </h3>
-              <p className="text-blue-700 dark:text-blue-300 mb-4">
+              <p className="text-primary-700 dark:text-primary-300 mb-4">
                 You need to be signed in to create a support ticket so we can track your request.
               </p>
               <Link href="/sign-in">
-                <Button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2">
+                <Button className="bg-primary-500 hover:bg-primary-600 text-white font-semibold px-6 py-2">
                   Sign In
                 </Button>
               </Link>
@@ -113,37 +113,37 @@ export default function SupportPage() {
 
         {/* Contact Information */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
+          <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-6">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Email</h3>
+              <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">Email</h3>
             </div>
-            <p className="text-gray-600 dark:text-gray-400">support@airwig.ca</p>
+            <p className="text-neutral-600 dark:text-neutral-400">support@airwig.ca</p>
           </div>
 
-          <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6">
+          <div className="bg-success-50 dark:bg-success-900/20 rounded-lg p-6">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-success-500 flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Response Time</h3>
+              <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">Response Time</h3>
             </div>
-            <p className="text-gray-600 dark:text-gray-400">We typically respond within 24 hours</p>
+            <p className="text-neutral-600 dark:text-neutral-400">We typically respond within 24 hours</p>
           </div>
         </div>
 
         {/* Support Form */}
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8">
+        <div className="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="name" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                 Name *
               </label>
               <input
@@ -153,14 +153,14 @@ export default function SupportPage() {
                 disabled={!isSignedIn}
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder="John Doe"
               />
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                 Email *
               </label>
               <input
@@ -170,14 +170,14 @@ export default function SupportPage() {
                 disabled={!isSignedIn}
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder="john@example.com"
               />
             </div>
 
             {/* Category */}
             <div>
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="category" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                 Category *
               </label>
               <select
@@ -186,7 +186,7 @@ export default function SupportPage() {
                 disabled={!isSignedIn}
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <option value="bug">🐛 Bug Report</option>
                 <option value="feature">✨ Feature Request</option>
@@ -197,7 +197,7 @@ export default function SupportPage() {
 
             {/* Subject */}
             <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="subject" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                 Subject *
               </label>
               <input
@@ -208,17 +208,17 @@ export default function SupportPage() {
                 maxLength={200}
                 value={formData.subject}
                 onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder="Brief description of your issue"
               />
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
                 {formData.subject.length}/200 characters
               </p>
             </div>
 
             {/* Message */}
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="message" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                 Message *
               </label>
               <textarea
@@ -229,10 +229,10 @@ export default function SupportPage() {
                 rows={8}
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder="Please provide as much detail as possible..."
               />
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
                 {formData.message.length}/5000 characters
               </p>
             </div>
@@ -241,7 +241,7 @@ export default function SupportPage() {
             <button
               type="submit"
               disabled={isSubmitting || !isSignedIn}
-              className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+              className="w-full bg-primary-500 hover:bg-primary-600 disabled:bg-neutral-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
             >
               {isSubmitting ? (
                 <>
@@ -282,42 +282,42 @@ export default function SupportPage() {
 
         {/* FAQ Section */}
         <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+          <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-6 text-center">
             Frequently Asked Questions
           </h2>
           <div className="space-y-4">
-            <details className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-              <summary className="font-semibold text-gray-900 dark:text-white cursor-pointer">
+            <details className="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-6">
+              <summary className="font-semibold text-neutral-900 dark:text-white cursor-pointer">
                 How do I delete my account?
               </summary>
-              <p className="mt-3 text-gray-600 dark:text-gray-400">
+              <p className="mt-3 text-neutral-600 dark:text-neutral-400">
                 You can delete your account from the Settings page in the app. Go to Settings → Account → Delete Account.
               </p>
             </details>
 
-            {/* <details className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-              <summary className="font-semibold text-gray-900 dark:text-white cursor-pointer">
+            {/* <details className="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-6">
+              <summary className="font-semibold text-neutral-900 dark:text-white cursor-pointer">
                 How do I report inappropriate content?
               </summary>
-              <p className="mt-3 text-gray-600 dark:text-gray-400">
+              <p className="mt-3 text-neutral-600 dark:text-neutral-400">
                 Tap the three dots on any post and select "Report". We review all reports within 24 hours.
               </p>
             </details> */}
 
-            <details className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-              <summary className="font-semibold text-gray-900 dark:text-white cursor-pointer">
+            <details className="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-6">
+              <summary className="font-semibold text-neutral-900 dark:text-white cursor-pointer">
                 How do I block a user?
               </summary>
-              <p className="mt-3 text-gray-600 dark:text-gray-400">
+              <p className="mt-3 text-neutral-600 dark:text-neutral-400">
                 Go to the user's profile, tap the three dots, and select "Block User". You can manage blocked users in Settings.
               </p>
             </details>
 
-            <details className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-              <summary className="font-semibold text-gray-900 dark:text-white cursor-pointer">
+            <details className="bg-neutral-50 dark:bg-neutral-800 rounded-lg p-6">
+              <summary className="font-semibold text-neutral-900 dark:text-white cursor-pointer">
                 What is your privacy policy?
               </summary>
-              <p className="mt-3 text-gray-600 dark:text-gray-400">
+              <p className="mt-3 text-neutral-600 dark:text-neutral-400">
                 You can view our full privacy policy at{" "}
                 <a href="https://airwig.ca/privacy-policy" className="text-blue-500 hover:underline">
                   airwig.ca/privacy-policy
@@ -331,7 +331,7 @@ export default function SupportPage() {
       {/* Footer */}
       <footer className="border-t border-gray-200 dark:border-gray-800 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-gray-600 dark:text-gray-400">
+          <div className="text-center text-neutral-600 dark:text-neutral-400">
             <p>&copy; 2025 AIRWIG. All rights reserved.</p>
             <div className="mt-4 flex justify-center gap-6">
               <a href="https://airwig.ca/privacy-policy" className="hover:text-blue-500">

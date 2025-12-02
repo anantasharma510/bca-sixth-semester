@@ -18,7 +18,7 @@ import rateLimit from 'express-rate-limit';
 import { verifyToken } from '@clerk/clerk-sdk-node';
 import { Block } from './models/block.model';
 import webhooksRoute from './routes/webhooks';
-// import liveStreamsRoute from './routes/liveStreams'; // COMMENTED OUT - Live streaming disabled
+import liveStreamsRoute from './routes/liveStreams';
 import chatRoute from './routes/chat';
 import supportRoute from './routes/support';
 import reportsRoute from './routes/reports';
@@ -972,7 +972,7 @@ const startServer = async () => {
     app.use('/api/protected', protectedRoute);
     app.use('/api/follows', followsRoute);
     app.use('/api/webhooks', webhooksRoute);
-    // app.use('/api/live-streams', liveStreamsRoute); // COMMENTED OUT - Live streaming disabled
+    app.use('/api/live-streams', liveStreamsRoute);
     app.use('/api/chat', chatRoute);
     app.use('/api/support', supportRoute);
     app.use('/api/reports', reportsRoute);

@@ -55,10 +55,10 @@ export default function StreamingGuide({ isOpen, onClose }: StreamingGuideProps)
       <Card className="max-w-4xl w-full max-h-[90vh] overflow-auto">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold flex items-center justify-center gap-2">
-            <Radio className="w-6 h-6 text-red-600" />
+            <Radio className="w-6 h-6 text-error-600" />
             How Live Streaming Works
           </CardTitle>
-          <p className="text-gray-600">Everything you need to know about streaming</p>
+          <p className="text-neutral-600">Everything you need to know about streaming</p>
         </CardHeader>
         
         <CardContent className="space-y-8">
@@ -66,16 +66,16 @@ export default function StreamingGuide({ isOpen, onClose }: StreamingGuideProps)
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {steps.map((step, index) => (
               <div key={index} className="relative">
-                <Card className="h-full border-2 hover:border-blue-300 transition-colors">
+                <Card className="h-full border-2 hover:border-primary-300 transition-colors">
                   <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4 text-primary-600">
                       {step.icon}
                     </div>
                     <h3 className="font-bold mb-2">{step.title}</h3>
-                    <p className="text-sm text-gray-600 mb-4">{step.description}</p>
+                    <p className="text-sm text-neutral-600 mb-4">{step.description}</p>
                     <div className="space-y-1">
                       {step.actions.map((action, actionIndex) => (
-                        <div key={actionIndex} className="text-xs bg-gray-100 rounded px-2 py-1">
+                        <div key={actionIndex} className="text-xs bg-neutral-100 rounded px-2 py-1">
                           {action}
                         </div>
                       ))}
@@ -86,7 +86,7 @@ export default function StreamingGuide({ isOpen, onClose }: StreamingGuideProps)
                 {/* Arrow */}
                 {index < steps.length - 1 && (
                   <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
-                    <ArrowRight className="w-6 h-6 text-blue-400" />
+                    <ArrowRight className="w-6 h-6 text-primary-400" />
                   </div>
                 )}
               </div>
@@ -94,23 +94,23 @@ export default function StreamingGuide({ isOpen, onClose }: StreamingGuideProps)
           </div>
 
           {/* Quick Navigation */}
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
+          <div className="bg-gradient-to-r from-primary-50 to-purple-50 rounded-lg p-6">
             <h3 className="font-bold text-lg mb-4 text-center">Quick Navigation</h3>
             <div className="grid md:grid-cols-3 gap-4">
-              <Card className="border-blue-200">
+              <Card className="border-primary-200">
                 <CardContent className="p-4 text-center">
-                  <Play className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <Play className="w-8 h-8 text-primary-600 mx-auto mb-2" />
                   <h4 className="font-semibold">Watch Streams</h4>
-                  <p className="text-sm text-gray-600 mb-3">Browse and join live content</p>
+                  <p className="text-sm text-neutral-600 mb-3">Browse and join live content</p>
                   <Badge variant="outline">Main /live page</Badge>
                 </CardContent>
               </Card>
               
-              <Card className="border-green-200">
+              <Card className="border-success-200">
                 <CardContent className="p-4 text-center">
-                  <Radio className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                  <Radio className="w-8 h-8 text-success-600 mx-auto mb-2" />
                   <h4 className="font-semibold">Start Streaming</h4>
-                  <p className="text-sm text-gray-600 mb-3">Create and broadcast live</p>
+                  <p className="text-sm text-neutral-600 mb-3">Create and broadcast live</p>
                   <Badge variant="outline">Go Live button</Badge>
                 </CardContent>
               </Card>
@@ -119,7 +119,7 @@ export default function StreamingGuide({ isOpen, onClose }: StreamingGuideProps)
                 <CardContent className="p-4 text-center">
                   <Settings className="w-8 h-8 text-purple-600 mx-auto mb-2" />
                   <h4 className="font-semibold">Manage Streams</h4>
-                  <p className="text-sm text-gray-600 mb-3">Edit, delete, and monitor</p>
+                  <p className="text-sm text-neutral-600 mb-3">Edit, delete, and monitor</p>
                   <Badge variant="outline">My Streams page</Badge>
                 </CardContent>
               </Card>
@@ -129,52 +129,52 @@ export default function StreamingGuide({ isOpen, onClose }: StreamingGuideProps)
           {/* Features */}
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-bold text-lg mb-3 text-green-600">✨ Host Features</h4>
+              <h4 className="font-bold text-lg mb-3 text-success-600">✨ Host Features</h4>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
-                  <Camera className="w-4 h-4 text-green-600" />
+                  <Camera className="w-4 h-4 text-success-600" />
                   Camera auto-starts when going live
                 </li>
                 <li className="flex items-center gap-2">
-                  <Monitor className="w-4 h-4 text-green-600" />
+                  <Monitor className="w-4 h-4 text-success-600" />
                   Screen sharing with one click
                 </li>
                 <li className="flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4 text-green-600" />
+                  <MessageCircle className="w-4 h-4 text-success-600" />
                   Real-time chat with viewers
                 </li>
                 <li className="flex items-center gap-2">
-                  <Eye className="w-4 h-4 text-green-600" />
+                  <Eye className="w-4 h-4 text-success-600" />
                   Live viewer count display
                 </li>
                 <li className="flex items-center gap-2">
-                  <Settings className="w-4 h-4 text-green-600" />
+                  <Settings className="w-4 h-4 text-success-600" />
                   Stream controls (mute, camera, end)
                 </li>
               </ul>
             </div>
             
             <div>
-              <h4 className="font-bold text-lg mb-3 text-blue-600">👥 Viewer Features</h4>
+              <h4 className="font-bold text-lg mb-3 text-primary-600">👥 Viewer Features</h4>
               <ul className="space-y-2 text-sm">
                 <li className="flex items-center gap-2">
-                  <Play className="w-4 h-4 text-blue-600" />
+                  <Play className="w-4 h-4 text-primary-600" />
                   Watch live video/screen share
                 </li>
                 <li className="flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4 text-blue-600" />
+                  <MessageCircle className="w-4 h-4 text-primary-600" />
                   Chat with host and other viewers
                 </li>
                 <li className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-blue-600" />
+                  <Users className="w-4 h-4 text-primary-600" />
                   See viewer count and activity
                 </li>
                 <li className="flex items-center gap-2">
-                  <Eye className="w-4 h-4 text-blue-600" />
+                  <Eye className="w-4 h-4 text-primary-600" />
                   Browse live, scheduled, and past streams
                 </li>
                 <li className="flex items-center gap-2">
-                  <Radio className="w-4 h-4 text-blue-600" />
+                  <Radio className="w-4 h-4 text-primary-600" />
                   Join any live stream instantly
                 </li>
               </ul>

@@ -37,10 +37,10 @@ export function LiveStreamCard({ stream }: LiveStreamCardProps) {
   
   const getStatusColor = () => {
     switch (stream.status) {
-      case 'live': return 'bg-red-500';
-      case 'scheduled': return 'bg-blue-500';
-      case 'ended': return 'bg-gray-500';
-      default: return 'bg-gray-500';
+      case 'live': return 'bg-error-500';
+      case 'scheduled': return 'bg-primary-500';
+      case 'ended': return 'bg-neutral-500';
+      default: return 'bg-neutral-500';
     }
   };
 
@@ -67,7 +67,7 @@ export function LiveStreamCard({ stream }: LiveStreamCardProps) {
     <Card className="overflow-hidden hover:shadow-lg transition-shadow">
       <div className="relative">
         {/* Thumbnail */}
-        <div className="aspect-video bg-gray-200 relative overflow-hidden">
+        <div className="aspect-video bg-neutral-200 relative overflow-hidden">
           {stream.thumbnailUrl ? (
             <img 
               src={stream.thumbnailUrl} 
@@ -75,8 +75,8 @@ export function LiveStreamCard({ stream }: LiveStreamCardProps) {
               className="w-full h-full object-cover"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-              <Play className="w-12 h-12 text-gray-400" />
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-neutral-100 to-neutral-200">
+              <Play className="w-12 h-12 text-neutral-400" />
             </div>
           )}
           
@@ -111,7 +111,7 @@ export function LiveStreamCard({ stream }: LiveStreamCardProps) {
                 {stream.title}
               </h3>
               
-              <p className="text-sm text-gray-600 mb-1">
+              <p className="text-sm text-neutral-600 mb-1">
                 {stream.hostId?.firstName && stream.hostId?.lastName 
                   ? `${stream.hostId.firstName} ${stream.hostId.lastName}`
                   : stream.hostId?.username || 'Unknown User'
@@ -119,7 +119,7 @@ export function LiveStreamCard({ stream }: LiveStreamCardProps) {
               </p>
               
               {formatTime() && (
-                <div className="flex items-center gap-1 text-xs text-gray-500">
+                <div className="flex items-center gap-1 text-xs text-neutral-500">
                   <Clock className="w-3 h-3" />
                   {formatTime()}
                 </div>
@@ -128,7 +128,7 @@ export function LiveStreamCard({ stream }: LiveStreamCardProps) {
           </div>
 
           {stream.description && (
-            <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+            <p className="text-sm text-neutral-600 mt-2 line-clamp-2">
               {stream.description}
             </p>
           )}

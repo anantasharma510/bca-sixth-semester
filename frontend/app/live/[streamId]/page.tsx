@@ -29,7 +29,8 @@ export default function LiveStreamPage() {
         setLoading(true);
         setError(null);
         const response = await getLiveStream(streamId);
-        setStream(response.liveStream);
+        // Backend returns { stream }, not { liveStream }
+        setStream(response.stream || response.liveStream);
       } catch (error: any) {
         console.error('Error fetching stream:', error);
         setError(error.message || 'Failed to load stream');
@@ -46,7 +47,7 @@ export default function LiveStreamPage() {
     if (streamId) {
       fetchStream();
     }
-  }, [streamId]);
+  }, [streamId, getLiveStream]);
 
   // Check if user is the host
   const isHost = stream && userId && (userId === stream.hostId?._id || userId === stream.hostId);

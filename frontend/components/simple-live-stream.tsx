@@ -60,7 +60,7 @@ const SimpleLiveStream: React.FC<SimpleLiveStreamProps> = ({
   const { user } = useAuth();
   const userId = user?.id;
   const { socket } = useSocket();
-  const { endLiveStream } = useLiveStreamApi();
+  const { endLiveStream, updateLiveStream } = useLiveStreamApi();
 
   // Agora SDK state
   const [AgoraRTC, setAgoraRTC] = useState<any>(null);
@@ -112,6 +112,10 @@ const SimpleLiveStream: React.FC<SimpleLiveStreamProps> = ({
         const AgoraRTCModule = await import('agora-rtc-sdk-ng');
         const SDK = AgoraRTCModule.default || AgoraRTCModule;
         setAgoraRTC(SDK);
+        
+        // Set log level (optional - reduces console noise)
+        // Options: 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'NONE'
+        SDK.setLogLevel(process.env.NODE_ENV === 'development' ? 'WARNING' : 'ERROR');
         
         // 🔧 FIX: Use 'live' mode for Interactive Live Streaming with host/audience roles
         const client = SDK.createClient({ mode: 'live', codec: 'vp8' });
@@ -211,19 +215,18 @@ const SimpleLiveStream: React.FC<SimpleLiveStreamProps> = ({
         agoraClient.on('user-joined', handleUserJoined);
         agoraClient.on('user-left', handleUserLeft);
 
-        // Get Agora App ID
+        // Get Agora App ID from environment variable
         const agoraAppId = process.env.NEXT_PUBLIC_AGORA_APP_ID;
         if (!agoraAppId) {
-          throw new Error('NEXT_PUBLIC_AGORA_APP_ID is not set');
+          throw new Error('NEXT_PUBLIC_AGORA_APP_ID is not set in environment variables');
         }
 
-        // 🔍 DEBUG: Log exact App ID and compare with backend
+        // 🔍 DEBUG: Log App ID (without hardcoded comparison)
         console.log('🆔 Frontend App ID Debug:', {
           appId: agoraAppId,
           appIdLength: agoraAppId.length,
           appIdType: typeof agoraAppId,
-          expectedBackend: 'c9566a2bf24941dcb82d39fea282a290',
-          matches: agoraAppId === 'c9566a2bf24941dcb82d39fea282a290'
+          isSet: !!agoraAppId
         });
 
         let finalToken = token;
@@ -237,9 +240,9 @@ const SimpleLiveStream: React.FC<SimpleLiveStreamProps> = ({
             const response = await fetch(`${apiUrl}/api/live-streams/${streamId}/join`, {
               method: 'POST',
               headers: {
-                'Authorization': `Bearer ${await (window as any).Clerk?.session?.getToken()}`,
                 'Content-Type': 'application/json'
-              }
+              },
+              credentials: 'include' // Include cookies for Better Auth
             });
 
             if (response.ok) {
@@ -320,9 +323,22 @@ const SimpleLiveStream: React.FC<SimpleLiveStreamProps> = ({
         console.log('✅ Joined Agora channel:', channelName, 'as', isHost ? 'HOST' : 'VIEWER', 'with UID:', finalUid);
         setIsJoined(true);
 
-        // If host, create and publish tracks
+        // If host, update stream status to 'live' and create/publish tracks
         if (isHost) {
           console.log('🎥 Host starting local tracks...');
+          
+          // Update stream status to 'live' when host joins
+          try {
+            await updateLiveStream(streamId, {
+              status: 'live',
+              startedAt: new Date().toISOString()
+            });
+            console.log('✅ Stream status updated to LIVE');
+          } catch (updateError) {
+            console.error('❌ Error updating stream status:', updateError);
+            // Don't block the stream if status update fails
+          }
+          
           await startLocalVideo();
           await startLocalAudio();
         } else {
@@ -356,7 +372,9 @@ const SimpleLiveStream: React.FC<SimpleLiveStreamProps> = ({
   useEffect(() => {
     const loadChatMessages = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/live-streams/${streamId}/chat`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/live-streams/${streamId}/chat`, {
+          credentials: 'include' // Include cookies for Better Auth
+        });
         if (response.ok) {
           const data = await response.json();
           setChatMessages(data.messages || []);

@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { useLiveStreamApi } from "@/lib/api";
 import { useSmartToast } from "@/hooks/use-toast";
+import { useSocket } from "@/components/socket-provider";
 
 const categories = [
   "Gaming", "Music", "Talk Show", "Educational", "Sports", "Entertainment", 
@@ -50,6 +51,7 @@ export default function LiveStreamsPage() {
   
   const { getLiveStreams } = useLiveStreamApi();
   const { toast } = useSmartToast();
+  const { socket } = useSocket();
 
   const fetchStreams = async () => {
     try {
@@ -59,7 +61,8 @@ export default function LiveStreamsPage() {
         category: selectedCategory && selectedCategory !== "all" ? selectedCategory : undefined,
         limit: 20
       });
-      setStreams(response.liveStreams || []);
+      // Backend returns { streams }, not { liveStreams }
+      setStreams(response.streams || response.liveStreams || []);
     } catch (error: any) {
       console.error('Error fetching streams:', error);
       toast({
@@ -75,6 +78,35 @@ export default function LiveStreamsPage() {
   useEffect(() => {
     fetchStreams();
   }, [activeTab, selectedCategory]);
+
+  // Listen for stream updates via socket
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleStreamUpdated = (data: { streamId: string; stream: any }) => {
+      console.log('📡 Stream updated event received:', data);
+      // Update the stream in the list if it exists
+      setStreams(prev => {
+        const index = prev.findIndex(s => s._id === data.streamId || s.id === data.streamId);
+        if (index >= 0) {
+          // Update existing stream
+          const updated = [...prev];
+          updated[index] = { ...updated[index], ...data.stream };
+          return updated;
+        } else if (data.stream.status === activeTab) {
+          // Add new stream if it matches the current tab
+          return [data.stream, ...prev];
+        }
+        return prev;
+      });
+    };
+
+    socket.on('stream-updated', handleStreamUpdated);
+
+    return () => {
+      socket.off('stream-updated', handleStreamUpdated);
+    };
+  }, [socket, activeTab]);
 
   const filteredStreams = streams.filter(stream =>
     stream.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

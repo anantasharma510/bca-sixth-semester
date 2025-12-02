@@ -185,10 +185,10 @@ const StreamManagementControls: React.FC<StreamManagementControlsProps> = ({
 
   const getStatusColor = () => {
     switch (stream?.status) {
-      case 'live': return 'bg-red-500 animate-pulse';
-      case 'scheduled': return 'bg-blue-500';
-      case 'ended': return 'bg-gray-500';
-      default: return 'bg-gray-500';
+      case 'live': return 'bg-error-500 animate-pulse';
+      case 'scheduled': return 'bg-primary-500';
+      case 'ended': return 'bg-neutral-500';
+      default: return 'bg-neutral-500';
     }
   };
 
@@ -218,7 +218,7 @@ const StreamManagementControls: React.FC<StreamManagementControlsProps> = ({
             <div className="flex items-center gap-2">
               {/* Go Live / End Stream Button */}
               {stream.status === 'scheduled' && (
-                <Button onClick={handleGoLive} className="bg-red-600 hover:bg-red-700">
+                <Button onClick={handleGoLive} className="bg-error-600 hover:bg-error-700">
                   <Radio className="w-4 h-4 mr-2" />
                   Go Live
                 </Button>
@@ -257,7 +257,7 @@ const StreamManagementControls: React.FC<StreamManagementControlsProps> = ({
                   
                   <DropdownMenuItem 
                     onClick={() => setIsDeleteDialogOpen(true)}
-                    className="text-red-600"
+                    className="text-error-600"
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
                     Delete Stream
@@ -274,26 +274,26 @@ const StreamManagementControls: React.FC<StreamManagementControlsProps> = ({
           {/* Stream Info */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-gray-500" />
+              <Users className="w-4 h-4 text-neutral-500" />
               <span>{stream.viewerCount || 0} viewers</span>
             </div>
             
             {stream.scheduledAt && (
               <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-gray-500" />
+                <Calendar className="w-4 h-4 text-neutral-500" />
                 <span>{new Date(stream.scheduledAt).toLocaleDateString()}</span>
               </div>
             )}
             
             {stream.startedAt && (
               <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-gray-500" />
+                <Clock className="w-4 h-4 text-neutral-500" />
                 <span>Started {new Date(stream.startedAt).toLocaleTimeString()}</span>
               </div>
             )}
             
             <div className="flex items-center gap-2">
-              <Settings className="w-4 h-4 text-gray-500" />
+              <Settings className="w-4 h-4 text-neutral-500" />
               <span>{stream.isPrivate ? 'Private' : 'Public'}</span>
             </div>
           </div>
@@ -301,7 +301,7 @@ const StreamManagementControls: React.FC<StreamManagementControlsProps> = ({
           {/* Description */}
           {stream.description && (
             <div>
-              <p className="text-gray-600 text-sm line-clamp-2">{stream.description}</p>
+              <p className="text-neutral-600 text-sm line-clamp-2">{stream.description}</p>
             </div>
           )}
           
@@ -376,7 +376,7 @@ const StreamManagementControls: React.FC<StreamManagementControlsProps> = ({
             <AlertDialogAction 
               onClick={handleDeleteStream} 
               disabled={isDeleting}
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-error-600 hover:bg-error-700"
             >
               {isDeleting ? 'Deleting...' : 'Delete Stream'}
             </AlertDialogAction>

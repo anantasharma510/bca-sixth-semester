@@ -25,28 +25,28 @@ const REPORT_REASONS = [
     label: "Spam",
     description: "Repetitive, unwanted, or promotional content",
     icon: Flag,
-    color: "text-orange-500"
+    color: "text-primary-500"
   },
   {
     value: "harassment",
     label: "Harassment",
     description: "Bullying, threats, or targeted abuse",
     icon: AlertTriangle,
-    color: "text-red-500"
+    color: "text-error-500"
   },
   {
     value: "hate_speech",
     label: "Hate Speech",
     description: "Content that attacks or incites hatred",
     icon: Shield,
-    color: "text-red-600"
+    color: "text-error-600"
   },
   {
     value: "violence",
     label: "Violence",
     description: "Content that promotes or depicts violence",
     icon: AlertTriangle,
-    color: "text-red-700"
+    color: "text-error-700"
   },
   {
     value: "inappropriate_content",
@@ -60,21 +60,21 @@ const REPORT_REASONS = [
     label: "Misinformation",
     description: "False or misleading information",
     icon: MessageSquare,
-    color: "text-yellow-500"
+    color: "text-warning-500"
   },
   {
     value: "copyright",
     label: "Copyright",
     description: "Unauthorized use of copyrighted material",
     icon: Copyright,
-    color: "text-blue-500"
+    color: "text-primary-500"
   },
   {
     value: "other",
     label: "Other",
     description: "Something else that violates our guidelines",
     icon: HelpCircle,
-    color: "text-gray-500"
+    color: "text-neutral-500"
   }
 ]
 
@@ -166,20 +166,20 @@ export function ReportModal({
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Flag className="w-5 h-5 text-red-500" />
+            <Flag className="w-5 h-5 text-error-500" />
             Report {getReportTarget()}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
           {/* Report target info */}
-          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+            <p className="text-sm text-neutral-600 dark:text-neutral-400">
               You are reporting {getReportTarget()} for violating our community guidelines.
             </p>
             {reportedContent && (
-              <div className="mt-2 p-2 bg-white dark:bg-gray-700 rounded border">
-                <p className="text-sm text-gray-700 dark:text-gray-300 truncate">
+              <div className="mt-2 p-2 bg-white dark:bg-neutral-700 rounded border">
+                <p className="text-sm text-neutral-700 dark:text-neutral-300 truncate">
                   "{reportedContent}"
                 </p>
               </div>
@@ -198,17 +198,17 @@ export function ReportModal({
                     onClick={() => setSelectedReason(reason.value)}
                     className={`p-3 rounded-lg border text-left transition-all ${
                       selectedReason === reason.value
-                        ? "border-red-500 bg-red-50 dark:bg-red-900/20"
-                        : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
+                        ? "border-error-500 bg-error-50 dark:bg-error-900/20"
+                        : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
                     }`}
                   >
                     <div className="flex items-start gap-3">
                       <Icon className={`w-5 h-5 mt-0.5 ${reason.color}`} />
                       <div className="flex-1">
-                        <div className="font-medium text-gray-900 dark:text-white">
+                        <div className="font-medium text-neutral-900 dark:text-white">
                           {reason.label}
                         </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                        <div className="text-sm text-neutral-500 dark:text-neutral-400">
                           {reason.description}
                         </div>
                       </div>
@@ -232,7 +232,7 @@ export function ReportModal({
               className="min-h-[100px] resize-none"
               maxLength={1000}
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-neutral-500 dark:text-neutral-400">
               {description.length}/1000 characters
             </p>
           </div>
@@ -250,14 +250,14 @@ export function ReportModal({
             <Button
               onClick={handleSubmit}
               disabled={!selectedReason || isSubmitting}
-              className="flex-1 bg-red-500 hover:bg-red-600"
+              className="flex-1 bg-error-500 hover:bg-error-600"
             >
               {isSubmitting ? "Submitting..." : "Submit Report"}
             </Button>
           </div>
 
           {/* Disclaimer */}
-          <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
+          <div className="text-xs text-neutral-500 dark:text-neutral-400 text-center">
             Reports are reviewed by our moderation team within 24 hours. 
             False reports may result in account restrictions.
           </div>
