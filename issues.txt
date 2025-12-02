@@ -1,0 +1,88 @@
+ Issue #1: Login Services (Guideline 4.8)
+Problem: You only have Clerk login, but Apple requires an alternative that meets privacy requirements.
+Solution: Add Sign in with Apple
+Quick Fix:
+Add Sign in with Apple to your app (this is the easiest option)
+OR Reply to Apple explaining that Clerk meets their requirements
+Recommendation: Add Sign in with Apple - it's what Apple wants and users expect it.
+🔧 Issue #2: User-Generated Content Safety (Guideline 1.2)
+Problem: Missing content moderation features for user posts/messages.
+Required Features:
+✅ Terms of Service (EULA) with no-tolerance policy
+✅ Content filtering system
+✅ Report/flag button on posts
+✅ Block user functionality
+✅ 24-hour response to reports
+Implementation Needed:
+Add report/flag buttons to posts
+Add block user feature
+Create content moderation system
+Add Terms of Service screen
+Create admin panel for handling reports
+🔧 Issue #3: Account Deletion (Guideline 5.1.1)
+Problem: No way for users to delete their account.
+Required:
+✅ Delete account option in settings
+✅ Must be permanent deletion (not just deactivation)
+✅ Can link to website if needed
+Quick Fix:
+Add "Delete Account" option in your app's settings menu.
+🔧 Issue #4: App Crash (Guideline 2.1) - CRITICAL
+Problem: App crashes when accessing camera/photos on iPad.
+Crash Steps:
+Log in → New post → Tap Camera/Photos → CRASH
+Device: iPad Air (5th generation) with iPadOS 26.0.1
+Must Fix:
+Test camera/photo access on iPad
+Fix the crash before resubmitting
+This is a blocking issue - app won't be approved until fixed
+🔧 Issue #5: Support URL (Guideline 1.5)
+Problem: https://airwig.ca doesn't have support information.
+Quick Fix:
+Create a support page at https://airwig.ca/support
+OR Change Support URL to a working support page
+OR Use a service like Zendesk, Intercom, etc.
+📋 Priority Fix Order:
+🔴 CRITICAL (Must Fix Before Resubmit):
+Fix iPad crash (Issue #4) - This will cause immediate rejection
+Add account deletion (Issue #3) - Easy to implement
+🟡 IMPORTANT (Should Fix):
+Create support page (Issue #5) - Very easy
+Add Sign in with Apple (Issue #1) - Medium effort
+🟢 NICE TO HAVE (Can Implement Later):
+Content moderation system (Issue #2) - Complex, can be basic version
+🚀 Quick Win Strategy:
+Phase 1: Fix Critical Issues (1-2 days)
+✅ Fix iPad camera crash
+✅ Add account deletion button
+✅ Create basic support page
+Phase 2: Add Apple Sign In (1 day)
+✅ Implement Sign in with Apple
+Phase 3: Basic Content Moderation (2-3 days)
+✅ Add report/block buttons
+✅ Add basic Terms of Service
+✅ Create simple admin panel
+🎯 Recommended Next Steps:
+Fix the crash first - Test on iPad, fix camera/photo access
+Add account deletion - Add button in settings
+Create support page - Simple contact form
+Resubmit - These 3 fixes might be enough for approval
+Add Sign in with Apple - For next version
+Content moderation - For future version
+
+
+
+
+Content Reporting System ❌ MISSING
+❌ No "Report Post" button on posts
+❌ No "Report User" button on profiles
+❌ No report content API in backend
+❌ No report model/database
+3. Content Filtering System ❌ MISSING
+❌ No automatic content filtering
+❌ No profanity detection
+❌ No inappropriate content detection
+4. Admin Panel for Reports ❌ MISSING
+❌ No admin interface for handling reports
+❌ No 24-hour response system
+❌ No content moderation dashboard

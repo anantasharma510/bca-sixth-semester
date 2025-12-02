@@ -1,0 +1,84 @@
+Custom Stylist AI – Dataset & Model Plan
+=======================================
+
+Goal
+----
+Replace the OpenAI call in `styleAi.service.ts` with our own model by training/fine-tuning an open-weight LLM on outfit-planning data that matches the schema we already use (structured outfits with search queries and price bands).
+
+Phase 1 – Dataset Definition
+----------------------------
+Inputs (per sample):
+1. `preparing_for` – event/scenario text (cocktail party, date night, interview, etc.).
+2. `preferred_brand` – comma-separated list; we’ll normalize to lowercase array.
+3. `budget` – text range or numeric (we’ll convert to min/max floats).
+4. `description` – free-form extra guidance.
+5. User profile fields: gender, age, height, weight, locale, image tags.
+
+Outputs (target for model):
+```
+{
+  "outfits": [
+    {
+      "looks": "string",
+      "description": "string",
+      "items": [
+        {
+          "query": "string",
+          "key": "string",
+          "type": "string",
+          "min": "string",
+          "max": "string",
+          "brand": "string"
+        }
+      ]
+    }
+  ]
+}
+```
+We need thousands of such pairs. Each item’s `query` must be a realistic search term that our scraping pipeline understands.
+
+Phase 2 – Data Sources & Collection
+-----------------------------------
+1. Public outfit datasets:
+   - *Polyvore Outfits* (Kaggle) – contains sets of products + titles. We’ll convert each set into our schema by summarizing into `looks`, describing the style, and deriving search queries from item metadata.
+   - *Fashion-Gen* or *DeepFashion* – provides images + captions; can use captioning models to extract garments.
+2. Blogs/Reddit/Pinterest:
+   - Crawl curated outfit posts (e.g., “10 business casual looks”), parse text + item lists.
+   - Need to respect robots.txt / Terms of Service; likely manual approval required.
+3. Synthetic augmentation:
+   - Use prompt templates with small open models (Llama 3, Phi-4) locally to bootstrap additional samples, then manually review. This reduces manual labeling time.
+
+Collection pipeline (implemented in `backend/src/scripts/style-dataset/`):
+1. `collect_polyvore.ts`: download Kaggle dataset -> JSON normalization.
+2. `augment_prompts.ts`: take curated scenario templates and call local LLM to expand.
+3. `validate_dataset.ts`: ensure every sample passes zod schema, budgets numeric, etc.
+4. Store final dataset in `data/style-dataset/train.jsonl` (and `valid.jsonl`).
+
+Phase 3 – Model Training
+------------------------
+1. Base model: start with `TinyLlama/TinyLlama-1.1B-Chat-v1.0` (Llama 2 arch, ~1.1B params). It’s light enough for local GPUs/CPUs yet still compatible with our existing tokenizer & tooling. If we hit quality ceilings we can revisit larger Llama 3 variants.
+2. Training stack:
+   - Python environment (`/style-model/` folder) with `accelerate`, `datasets`, `peft`, `bitsandbytes`.
+   - Script `train_style_model.py` to fine-tune on JSONL dataset (instruction-tuning style: prompt = concatenated inputs, target = JSON output).
+3. Evaluate on held-out set; enforce JSON validity via automatic parsing tests.
+
+Phase 4 – Hosting & Integration
+-------------------------------
+1. Export adapter weights (LoRA) and quantized gguf for llama.cpp inference.
+2. Wrap in FastAPI server (`style-model-api/main.py`) exposing `/generate` that accepts our form/profile payload and responds with JSON.
+3. Update `styleAi.service.ts` to call our local endpoint instead of OpenAI; keep zod validation unchanged.
+4. Add health checks, caching, and config toggle (env var `STYLE_MODEL_URL`).
+
+Open Questions
+--------------
+1. Target dataset size? (Minimum 3k samples to start; more gives better generalization).
+2. Do we care about multi-outfit responses or stick to 1 per request? (Current pipeline uses first outfit only.)
+3. Hardware availability for training/inference? (Need at least 1x A100 for fast training or accept longer runs on smaller GPUs.)
+4. Licensing: confirm chosen datasets permit commercial derivative works.
+
+Next Steps
+----------
+[] Build `/backend/src/scripts/style-dataset/collectPolyvore.ts` to normalize Kaggle data.
+[] Draft `data/style-dataset/schema.json` describing sample format.
+[] Prepare Python env scaffold (`style-model/requirements.txt`, `train_style_model.py` template).
+

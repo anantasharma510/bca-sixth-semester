@@ -1,0 +1,123 @@
+StyleUp AI + Scraping Integration Plan
+======================================
+
+Purpose
+-------
+Capture the full architecture we want to mirror inside the primary backend/mobile stack so we never lose track of the requirements or dependencies while building the StyleUp-inspired flow (AI styling prompts, scraping, storage, feed sharing).
+
+Reference Systems
+-----------------
+1. styleup-backend-master
+   - `app/api/[[...route]]/generate.ts`: Orchestrates AI prompt, scraping, persistence.
+   - `services/assistant/ask.ts`: Wraps OpenAI Assistant threads and image inputs.
+   - `services/scrapper/get_url.ts`, `get_data.ts`, `scripts/generateScript.ts`: Build source URLs per brand, scrape with fetch/Oxylabs fallback, normalize & upsert products/outfits.
+   - `app/api/[[...route]]/user-profile.ts`: CRUD for user biometrics, locales, profile pictures.
+   - `db/schema/*`: Defines `generationData`, `outfit`, `products`, `productDetails`, `productColors`, mapping tables, etc.
+2. styleup-app (Expo)
+   - `app/(home)/(tabs)/generate`: 3-step form that collects scenario, preferred brands, budget, and description; invokes `useGenerate`.
+   - `api/generate.ts`: `useGenerate` mutation and `useGetOutfitProducts` query; expects Clerk tokens and backend responses.
+   - `app/(outfit-detail)` & feed screens: display outfit results and allow posting to feed.
+
+High-Level Flow to Rebuild
+--------------------------
+1. User initiates “Generate Outfit” in the mobile app.
+2. App checks local profile cache:
+   - If age, gender, height, weight, locale, and profile photo are missing, show a “Style Profile” modal (one-time capture) and send data to backend.
+3. Mobile submits generation payload:
+   ```
+   POST /api/generate
+     Headers: Authorization (our auth system)
+     Body: { preparing_for, preferred_brand, budget, description }
+   ```
+4. Backend pipeline:
+   - Auth middleware validates session → fetch user profile (including newly captured biometrics).
+   - Call `askStyleupAi` equivalent with form data + profile (text + profile photo URL) to get structured outfit plan.
+   - For each outfit item with a `query`, call `scrapeSources(getSourcesUrl(...))` to fetch Zara/H&M (and extendable) product data, using Oxylabs fallback when needed.
+   - Transactional inserts:
+     * `generation_requests`: store prompt inputs + user id.
+     * `outfits`: create outfit record with look name/description + random banner.
+     * `products`, `product_details`, `product_colors`: upsert normalized scraping output (upload images to our CDN/bucket first).
+     * `outfits_products`, `users_outfits`: link everything together.
+   - Response: `{ success: true, data: outfitId }`.
+5. Mobile navigates to outfit detail screen:
+   - Calls `GET /api/generate/:id` for outfit summary.
+   - Calls `GET /api/generate/outfit/:id/products` for localized product data (scrape price localization if missing via `getLocalePrice` logic).
+6. Feed sharing:
+   - After reviewing the generated outfit, user can toggle “Share to Feed”.
+   - Endpoint: `POST /api/feed/outfits/:id/share { isPublic: boolean, caption? }`.
+   - Feed service queries outfits where `is_public = true`.
+
+Backend Tasks
+-------------
+1. Data modeling
+   - Extend `users` (or create `style_profiles`) with age, gender, height, weight, locale, profile photo pointer, collected_at timestamp.
+   - Define tables/collections mirroring:
+     * `generation_requests` (inputs, references user, status, metadata)
+     * `outfits`
+     * `products`
+     * `product_details` (price, locale, URL)
+     * `product_colors`
+     * Junction tables `outfits_products`, `users_outfits`
+     * `feed_posts` or boolean flags for sharing (`is_public`, `shared_at`)
+2. Services
+   - `styleAiService.askAssistant(userProfile, promptData)` → wraps OpenAI Assistant or GPT model; handle retries, JSON parsing, validation via zod schema.
+   - `scraperService.getSourcesUrl(query, filters)` → brand-specific URL builder.
+   - `scraperService.scrapeSources(urls)` → orchestrates fetch + Oxylabs fallback, brand mappers, error handling.
+   - `productStore.saveScrapedProducts(products)` → transactional upsert with image uploads.
+   - `outfitService.createFromGeneration(userId, inputs, scrapedProducts)` → creates outfit, relations, feed metadata.
+3. Routes / Controllers
+   - `POST /api/style-profile` (optional) to save biometrics when the modal is submitted.
+   - `POST /api/generate` (auth required) to run the pipeline.
+   - `GET /api/generate/:id` to fetch outfit summary.
+   - `GET /api/generate/outfit/:id/products` to fetch product list (with localized price fallback).
+   - `POST /api/feed/outfits/:id/share` to toggle feed visibility.
+4. Background / resilience
+   - Optional queue for scraping if we want async processing; for now keep synchronous but guard with timeouts.
+   - Rate limiting per user for generation endpoint.
+   - Telemetry/logging for AI/generation failures.
+
+Mobile Tasks
+------------
+1. Style profile modal
+   - On entering generate flow, call `/api/user/style-profile` to check status.
+   - If missing fields, prompt user with a wizard to capture age, gender, height, weight, locale, profile photo (camera/upload). Submit once; cache locally.
+2. Generation form
+   - Reuse existing multi-step UI; update `useGenerate` to call our backend (auth token from our system).
+   - Show progress spinner while backend scrapes; provide error states for missing profile data or rate limits.
+3. Outfit detail & products
+   - Query new endpoints, display product cards, localized prices, and brand-specific purchase links.
+4. Feed sharing UI
+   - After successful generation, show CTA “Share to feed”.
+   - Add toggle/button on outfit detail to call share endpoint and optionally input caption/hashtags.
+
+Implementation Order
+--------------------
+1. Schema updates + migrations for user style profile + generation/outfit/product tables.
+2. Add style profile endpoints + mobile modal to capture data.
+3. Build OpenAI assistant service (config, environment variables, zod schema, error handling).
+4. Port scraping utilities (URL builders, fetch/Oxylabs wrappers, product mappers, storage workflow).
+5. Implement `POST /api/generate` end-to-end with transactional persistence.
+6. Add GET endpoints for outfits + products, including localized price scraping fallback.
+7. Implement feed share flag/endpoint and integrate with existing feed queries.
+8. Wire mobile app to new endpoints, update hooks, and add share UX.
+9. Testing:
+   - Unit tests for AI service (mock OpenAI), URL builders, scrapers.
+   - Integration test that runs a full generation (with mocked scraping) and validates DB inserts.
+   - Mobile e2e or manual test plan covering first-time profile capture → generation → feed share.
+
+Open Questions / TBD
+--------------------
+1. Do we need to support additional brands beyond Zara/H&M? (Plan for extensible mapper registry.)
+2. What storage/CDN will host uploaded product images? (Reuse existing S3 bucket?).
+3. Should generation run synchronously (blocking mobile) or async with polling? (MVP: sync, later upgrade.)
+4. How to enforce budgets/currencies? (Need currency conversion if locale differs; scraping already handles price localization but we may want fallback conversions.)
+5. Rate limits & billing: define daily quotas per user to control OpenAI/proxy costs.
+
+Next Steps Snapshot
+-------------------
+[] Confirm schema extension approach with team (reuse existing tables vs. new ones).
+[] Prepare .env additions: OpenAI keys, Assistant IDs, Oxylabs credentials, CDN bucket.
+[] Scaffold backend services + endpoints (start with style profile + generate).
+[] Update mobile auth hooks + API layer to hit new backend routes.
+[] Create QA checklist for generation + feed share experience.
+

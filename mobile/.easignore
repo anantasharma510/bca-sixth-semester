@@ -1,0 +1,9 @@
+# Force EAS to regenerate native code for proper native module linking
+android/
+ios/
+
+
+
+
+
+

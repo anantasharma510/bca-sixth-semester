@@ -1,0 +1,7 @@
+root
+zxz33@Rmy8%zp0Xwp#$H
+137.184.175.9 ssh root@137.184.175.9
+
+appuser@airwig:~/airwig/social-media-app-main$
+
+su - appuser
